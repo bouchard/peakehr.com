@@ -1,0 +1,38 @@
+<div class="sign-in-container">
+  <div class="welcome">
+    <h3>
+      Welcome to
+    </h3>
+    <h1>
+      <%= CLINIC_NAME %>
+    </h1>
+    <h2 class="contact-details">
+      <%= CLINIC_ADDRESS.join('<br>').html_safe %>
+      <% CLINIC_CONTACT_DETAILS.each do |k, v| %>
+        <br><span class="<%= k %>"><%= k %>:</span> <%= v %>
+      <% end %>
+    </h2>
+  </div>
+  <div class="sign-in">
+    <% if session[:needing_otp_staff_id] %>
+      <h1>Please enter the authentication token from your phone.</h1>
+      <%= form_for(:user, url: session_path) do |f| %>
+        <label for="user_otp">Token:</label>
+        <%= f.text_field :otp_token %>
+        <%= f.label :trust_this_computer, "Trust this computer?" %>
+        <%= f.check_box :trust_this_computer %>
+        <%= f.submit "Sign in" %>
+      <% end %>
+    <% else %>
+      <h2>Staff Login</h2>
+      <h1>Please sign in to continue.</h1>
+      <%= form_for(:user, url: session_path) do |f| %>
+        <label for="user_username">Username:</label>
+        <%= f.text_field :username %>
+        <label for="user_password">Password:</label>
+        <%= f.password_field :password %>
+        <%= f.submit "Sign in" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

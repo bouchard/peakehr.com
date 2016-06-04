@@ -1,0 +1,12 @@
+<% office_hours = @calendars.map{ |c| c.workday.office_hours }.flatten %>
+<% appointments = @calendars.map{ |c| c.appointments.map(&:booked_at) }.flatten %>
+<% @client_side_state[:schedule_data] = {
+  appointment_interval: APPOINTMENT_INTERVAL,
+  earliest_time_to_display: [ office_hours.flatten.min, appointments.min ].compact.min,
+  latest_time_to_display: [ office_hours.flatten.max - 2, appointments.max ].compact.max,
+  calendars: @calendars.as_json
+} %>
+
+<div id="calendar"></div>
+<% if current_user.all_tasks.count > 0 %><div class="tasks">You have <%= pluralize(current_user.all_tasks.count, 'task') %> outstanding.</div><% end %>
+<div id="timetable"></div>

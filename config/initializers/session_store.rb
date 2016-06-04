@@ -1,0 +1,1 @@
+PeakEHR::Application.config.session_store :cache_store

@@ -1,0 +1,14 @@
+<% @client_side_state[:patient_id] = @patient.id %>
+<div id="demographics">
+  <h1><%= @patient.full_name %> // <%= @patient.short_age_in_words %></h1>
+  <h3>Enrolled Studies</h3>
+  <ul>
+    <% if @enrollments.empty? %>
+    <li>This patient is not enrolled in any studies.</li>
+    <% else %>
+      <% @enrollments.each do |e| %>
+        <li><%= e.study.name %> &mdash; enrolled <%= timeago(e.consent_obtained_at) %></li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

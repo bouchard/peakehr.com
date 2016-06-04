@@ -1,0 +1,10 @@
+<div class="sign-in-container">
+  <div class="sign-in">
+
+    <h1>Scan this QR Code with Google Authenticator on your Phone:</h1>
+    <%= form_for(:user, url: session_path) do |f| %>
+      <%= image_tag(otp_qrcode_session_path(format: 'svg'), class: 'qrcode') %>
+    <% end %>
+
+  </div>
+</div>

@@ -1,0 +1,2 @@
+postfix postfix/mailname string prod.peakehr.com
+postfix postfix/main_mailer_type string 'Internet Site'

@@ -1,0 +1,7 @@
+<% provide(:body) do %>
+  <nav>
+    <%= link_to('Back to Patient', patient_path(@patient), class: 'link') %>
+  </nav>
+  <%= yield %>
+<% end %>
+<%= render file: 'layouts/application' %>

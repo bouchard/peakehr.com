@@ -1,0 +1,139 @@
+user www-data;
+error_log logs/error.log;
+pid /var/run/nginx.pid;
+
+worker_processes 2;
+events {
+    # Number of client connections is worker_processes * worker_connections.
+    worker_connections 1024;
+}
+
+http {
+
+    server_tokens off;
+
+    # Required by Digital Ocean.
+    types_hash_bucket_size 64;
+    server_names_hash_bucket_size 64;
+
+    passenger_root /usr/local/lib/ruby/gems/{{ ruby_major_version }}.{{ ruby_minor_version }}.0/gems/passenger-{{ passengerversion.version }};
+    passenger_ruby /usr/local/bin/ruby;
+    # We have delayed_job workers, so not too many instances for now...
+    passenger_max_pool_size 2;
+    # passenger_max_instances_per_app 2;
+    passenger_pool_idle_time 0;
+    passenger_max_requests 1000;
+    passenger_show_version_in_header off;
+    passenger_pre_start http://peakehr.com/;
+
+    passenger_friendly_error_pages off;
+
+    include mime.types;
+    default_type application/octet-stream;
+
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log logs/access.log main;
+
+    sendfile on;
+
+    keepalive_timeout 75;
+
+    gzip on;
+    gzip_types
+        application/atom+xml
+        application/javascript
+        application/json
+        application/rss+xml
+        application/vnd.ms-fontobject
+        application/x-font-ttf
+        application/x-web-app-manifest+json
+        application/xhtml+xml
+        application/xml
+        font/opentype
+        image/svg+xml
+        image/x-icon
+        text/css
+        text/javascript
+        text/plain
+        text/x-component;
+    gzip_comp_level 9;
+    gzip_vary on;
+
+    ssl_certificate_key certs/server.key;
+
+    # Enable perfect forward secrecy:
+    # https://community.qualys.com/blogs/securitylabs/2013/08/05/configuring-apache-nginx-and-openssl-for-forward-secrecy
+    # https://weakdh.org/sysadmin.html
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
+    ssl_prefer_server_ciphers on;
+    ssl_dhparam dhparams.pem;
+
+    ### RAILS - Peak EHR
+
+    server {
+
+        listen 443 ssl spdy;
+        server_name peakehr.com;
+
+        ssl_certificate certs/peakehr.crt;
+
+        error_page 404 /assets/404.html;
+        error_page 500 502 503 504 /assets/500.html;
+
+        root /var/rails/peakehr.com/current/public;
+        try_files $uri $document_root/system/maintenance.html @passenger;
+
+        client_max_body_size 21m;
+
+        location ~ ^/(assets|fonts|javascripts|stylesheets|images)/  {
+            gzip_static on;
+            expires max;
+            add_header Cache-Control public;
+            add_header Last-Modified "";
+            add_header ETag "";
+            # Firefox requires this header for font loading to work.
+            add_header Access-Control-Allow-Origin *;
+            break;
+        }
+
+        location @passenger {
+            passenger_enabled on;
+            passenger_intercept_errors on;
+            root /var/rails/peakehr.com/current/public;
+            passenger_min_instances 1;
+        }
+
+    }
+
+    ### WWW - The Well Inspired Ventures, Inc. main site.
+
+    server {
+        listen 80;
+        server_name thewellinspired.com;
+        root /var/www/thewellinspired.com;
+    }
+
+    ### WWW Subdomain Redirects.
+
+    server {
+        listen 80;
+        server_name www.peakehr.com;
+        rewrite ^/(.*) https://peakehr.com/$1 permanent;
+    }
+
+    ### Administrative Services
+
+    # Redirect to HTTPS for all apps.
+    server {
+        listen 80;
+        server_name peakehr.com;
+        location / {
+            rewrite ^(.*) https://$host$1 permanent;
+        }
+    }
+
+}

@@ -1,0 +1,77 @@
+@import 'compass';
+@import 'constants';
+
+#facebox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  text-align: left;
+  max-width: 800px;
+  .popup {
+    margin-bottom: 30px;
+    position: relative;
+    border: 3px solid rgba(0,0,0,0);
+    @include border-radius(7px);
+    @include box-shadow(0 0 18px transparentize(#000, 0.3));
+  }
+  .content {
+    @include box-sizing(content-box);
+    display: table;
+    padding: 10px 20px;
+    //background: transparentize(adjust-lightness($alert, 0%), 0.1);
+    background: transparentize(#fff, 0.05);
+    @include border-radius(4px);
+    color: #000;
+  }
+  .content > p:first-child {
+    margin-top: 0;
+  }
+  .content > p:last-child {
+    margin-bottom: 0;
+  }
+  .close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 2px;
+    img{
+       opacity: 0.3;
+    }
+    &:hover img {
+      opacity: 1.0;
+    }
+  }
+  .loading {
+    text-align: center;
+  }
+  .image {
+    text-align: center;
+  }
+  img {
+    border: 0;
+    margin: 0;
+  }
+}
+
+#facebox_overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height:100%;
+  width:100%;
+}
+
+.facebox_hide {
+  z-index:-100;
+}
+
+.facebox_overlayBG {
+  background-color: #000;
+  z-index: 99;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -ms-filter: blur(5px);
+  -o-filter: blur(5px);
+  filter: blur(5px);
+}

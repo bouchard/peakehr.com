@@ -1,0 +1,39 @@
+<!-- Timetable -->
+<table>
+  <tr>
+    <th></th>
+    <% for c in @calendars : %>
+      <th>
+        <%= c.clinician.full_name_with_title %>
+      </th>
+    <% end %>
+  </tr>
+  <% possibleApptTimes = _.range(moment(@earliest_time_to_display).unix(), moment(@latest_time_to_display).unix(), @appointment_interval) %>
+  <% for possibleApptTime, i in possibleApptTimes : %>
+  <% possibleApptTime = moment.unix(possibleApptTime) %>
+    <tr>
+      <td class="timestamp">
+        <%= possibleApptTime.format('h:mma') %>
+      </td>
+      <% for c in @calendars : %>
+        <td class="<%= 'office-hours' if _.detect(c.workday.office_hours, (o) -> moment().range(moment(o[0]), moment(o[1]).subtract('seconds', 1)).contains(possibleApptTime)) %>">
+          <% that = this %>
+          <% apptsThisSlot = _.filter(c.appointments, (a) -> moment().range(possibleApptTime, moment(possibleApptTime).add('seconds', that.appointment_interval - 1)).contains(moment(a.booked_at))) %>
+          <table class="appointments">
+            <tr>
+              <% for a in apptsThisSlot : %>
+                <td>
+                <div class="appointment" data-id="<%= a.patient.id %>">
+                  <div class="name"><%= a.patient.full_name %> <span>// <%= $.shortAgeInWords(a.patient.date_of_birth) %> // <%= a.patient.sex %></span></div>
+                  <%= a.one_liner %>
+                </div>
+                </td>
+              <% end %>
+            </tr>
+          </table>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+<!-- /Timetable -->

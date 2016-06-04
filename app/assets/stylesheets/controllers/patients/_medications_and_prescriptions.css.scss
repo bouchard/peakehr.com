@@ -1,0 +1,119 @@
+@import 'partials/mixins';
+
+body.patients.medications, body.patients.prescriptions {
+  #medications, #prescriptions {
+    margin-right: $sidebar-width;
+    padding: 20px;
+    h1 {
+      // font-size: 1.2em;
+      margin-bottom: 0;
+      &:first-of-type {
+        margin-top: 0;
+      }
+      // color: #f00;
+      a {
+        display: inline-block;
+        padding: 3px 10px;
+        line-height: 1em;
+        vertical-align: 2px;
+        font-size: 0.6em;
+        background: adjust-saturation(adjust-lightness($dark-color, 19%), $saturation-adjustment);
+        color: #fff;
+        @include regular-font;
+      }
+    }
+    table.medications {
+      width: 100%;
+      tr {
+        @include background(
+          linear-gradient(top,
+            adjust-saturation(adjust-lightness($accent1, -3%), $saturation-adjustment + 80%),
+            adjust-saturation(adjust-lightness($accent1, -6%), $saturation-adjustment + 80%),
+            adjust-saturation(adjust-lightness($accent1, -9%), $saturation-adjustment + 80%)
+          )
+        );
+        &:nth-of-type(even) {
+          @include background(
+            linear-gradient(top,
+              adjust-saturation(adjust-lightness($accent1, 7%), $saturation-adjustment + 80%),
+              adjust-saturation(adjust-lightness($accent1, 6%), $saturation-adjustment + 80%),
+              adjust-saturation(adjust-lightness($accent1, 5%), $saturation-adjustment + 80%)
+            )
+          );
+        }
+        &:hover {
+          @include background(
+            linear-gradient(top,
+              adjust-saturation(adjust-lightness($accent1, 13%), $saturation-adjustment + 80%),
+              adjust-saturation(adjust-lightness($accent1, 12%), $saturation-adjustment + 80%),
+              adjust-saturation(adjust-lightness($accent1, 11%), $saturation-adjustment + 80%)
+            )
+          );
+        }
+        th {
+          text-align: left;
+          @include regular-font;
+          padding: 3px 5px;
+          font-size: 0.9em;
+          @include background(
+            linear-gradient(
+              top,
+              adjust-saturation(adjust-lightness($dark-color, 21%), $saturation-adjustment),
+              adjust-saturation(adjust-lightness($dark-color, 19%), $saturation-adjustment),
+              adjust-saturation(adjust-lightness($dark-color, 17%), $saturation-adjustment)
+            )
+          );
+          color: $accent1;
+        }
+        td {
+          padding: 5px;
+          cursor: pointer;
+          &.checkbox {
+            text-align: center;
+          }
+          input[type=checkbox] {
+            vertical-align: 1.5px;
+          }
+        }
+      }
+    }
+    #new_prescription { // form.
+      table.new_prescription {
+        // width: 100%;
+        td {
+          padding: 5px;
+          vertical-align: bottom;
+          &.flash-container {
+            div {
+              @include border-radius(3px);
+              padding: 0.5em 1em;
+            }
+            .study-enrollment {
+              color: #fff;
+              background: adjust-saturation(adjust-lightness($dark-color, 21%), $saturation-adjustment);
+            }
+            .suggested-dose {
+              margin-top: -3px;
+              padding-top: 0;
+              color: adjust-saturation(adjust-lightness($dark-color, 21%), $saturation-adjustment);
+              @include italic-font;
+            }
+            a {
+              color: #fff;
+            }
+          }
+        }
+      }
+      label {
+        display: block;
+      }
+      input[type=submit] {
+        float: right;
+        margin-left: 0.3em;
+      }
+      #prescription_dose_and_route {
+        text-transform: uppercase;
+      }
+    }
+  }
+}

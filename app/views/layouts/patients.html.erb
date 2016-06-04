@@ -1,0 +1,7 @@
+<% provide(:body) do %>
+  <nav>
+    <a href="#" class="link schedule alert" rel="Shortcut: &#8984;A"><i class="fa fa-tasks"></i> <%= current_user.visits.active.count %> waiting, 1 on deck (room 7)</a><a href="#" class="link new-stamp" rel="Shortcut: &#8984;S"><i class="fa fa-bolt"></i> Stamp</a><a href="#" class="link new-req" rel="Shortcut: &#8984;Q"><i class="fa fa-check-square-o"></i> New Req</a><a href="#" class="link new-letter" rel="Shortcut: &#8984;L"><i class="fa fa-edit"></i> New Letter</a><a href="#" class="link new-calculation"><i class="fa fa-bar-chart"></i> New Calculation</a>
+  </nav>
+  <%= yield %>
+<% end %>
+<%= render file: 'layouts/application' %>

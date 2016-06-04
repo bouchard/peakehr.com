@@ -1,0 +1,18 @@
+Dizziness
+Vertigo or Presyncope?
+
+Vertigo -> Central (15%) vs Peripheral(85%)
+Peripheral = horizontal nystagmus, sometimes torsional, hearing change and tinnitus can be present
+Central = nystagmus is vertical or rotary and hearing loss and tinnitus typically absent
+Duration:
+Exacerbating factors(head movement/exercise):
+Associated symptoms(neurological,audiologic):
+General medical history:
+Examination(ENT, Neuro exam,Dix Halpike,Audiometry,MRI):
+
+Presyncope
+Duration:
+Exacerbating factors(exercise/head movement):
+Associated symptoms(SOB, palpitations,chest pain):
+General medical history:
+Examination(Cardiac,PVD,Bloodwork,ECG,Holter,EST,Tilt table,carotid doppler,EEG)

@@ -1,0 +1,50 @@
+---
+- name: Install the basics
+  apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
+  with_items:
+    - git
+    - nodejs # For compiling Coffeescript.
+    - python-pycurl
+    - build-essential
+    - libcurl4-openssl-dev
+    - zlib1g-dev
+    - libssl-dev
+    - libreadline6-dev
+    - libyaml-dev
+    - imagemagick # For Avatars / Uploads.
+    - unattended-upgrades
+    - libffi-dev
+
+- name: Remove landscape-common
+  apt: name={{ item }} state=absent
+  with_items:
+    - landscape-common
+    - landscape-client
+
+# - name: Autoremove cruft
+#   shell: "apt-get autoremove"
+#   sudo: true
+
+- name: Set hostname
+  hostname: name=prod.peakehr.com
+
+- name: Create and chmod the Rails directory
+  shell: "mkdir -p /var/rails && chown {{ ssh_user }}:{{ ssh_user }} /var/rails && chmod a+s /var/rails"
+  sudo: true
+
+- name: Copy enabling config for unattended-upgrades
+  copy: src=20auto-upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades
+
+- name: Copy configuration for unattended-upgrades
+  copy: src=50unattended-upgrades dest=/etc/apt/apt.conf.d/50unattended-upgrades
+
+- name: Set /etc/timezone
+  shell: echo 'UTC' > /etc/timezone
+  sudo: true
+
+- name: Reconfigure timezone
+  command: dpkg-reconfigure -f noninteractive tzdata
+  sudo: true
+
+- name: Copy over rsyslog to store a year's worth of logs.
+  copy: src=rsyslog dest=/etc/logrotate.d/rsyslog owner=root group=root mode=0644

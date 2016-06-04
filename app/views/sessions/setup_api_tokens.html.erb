@@ -1,0 +1,15 @@
+<h1>Pair with PeakEHR Mobile</h1>
+<h2>Scan the code below when prompted in the PeakEHR Mobile app. You'll only need to do this once!</h2>
+<%= image_tag(api_tokens_qrcode_session_path(format: 'svg'), class: 'qrcode') %>
+<script type="text/javascript">
+$(function() {
+  $.eventSource.subscribe('mobile_paired', function(e) {
+    console.log(e);
+    data = $.parseJSON(e.data);
+    if (data.id == <%= current_user.id %>) {
+      console.log('woot!');
+      // TODO: Show a big "paired successfully!!" text and redirect back.
+    }
+  });
+});
+</script>

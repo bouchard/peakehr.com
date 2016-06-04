@@ -1,0 +1,62 @@
+@import 'partials/mixins';
+
+body.patients.enrollments {
+  #enrollments {
+    margin-right: $sidebar-width;
+    padding: 20px;
+    h1 {
+      // font-size: 1.2em;
+      margin-bottom: 0;
+      &:first-of-type {
+        margin-top: 0;
+      }
+      // color: #f00;
+      a {
+        display: inline-block;
+        padding: 3px 10px;
+        line-height: 1em;
+        vertical-align: 2px;
+        font-size: 0.6em;
+        background: adjust-saturation(adjust-lightness($dark-color, 19%), $saturation-adjustment);
+        color: #fff;
+        @include regular-font;
+      }
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .consent-form-link {
+      @include heavy-font;
+      display: block;
+      color: adjust-lightness($light-color, -60%);
+      text-align: center;
+      margin: 0 auto;
+      width: 80%;
+      @include border-radius(3px);
+      padding: 8px 12px;
+      line-height: 1.42;
+      vertical-align: 0;
+      @include box-sizing(border-box);
+      background: #fff;
+      border: 2px solid adjust-saturation(adjust-lightness($light-color, -18%), $saturation-adjustment);
+      @include box-shadow(none);
+      &:focus {
+        outline: none;
+        border: 2px solid adjust-lightness($light-color, -18%);
+      }
+      // Can't group these weird rules.
+      &::-webkit-input-placeholder {
+        color: adjust-saturation(adjust-lightness($light-color, -18%), $saturation-adjustment);
+      }
+      &::-moz-placeholder {
+        color: adjust-saturation(adjust-lightness($light-color, -18%), $saturation-adjustment);
+      }
+      &:-ms-input-placeholder {
+        color: adjust-saturation(adjust-lightness($light-color, -18%), $saturation-adjustment);
+      }
+    }
+    .centered {
+      text-align: center;
+    }
+  }
+}

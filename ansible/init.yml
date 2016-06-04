@@ -1,0 +1,50 @@
+---
+- hosts: all
+  user: root
+  sudo: no
+  vars:
+  - ssh_user: "{{ lookup('env', 'USER') }}"
+
+  tasks:
+  - name: INIT | Create admin system group
+    group: name=admins system=yes state=present
+
+  - name: INIT | Create admin account from current user
+    user: name="{{ ssh_user }}" state=present groups=admins shell=/bin/bash
+
+  - name: INIT | Make sure essential software is installed
+    apt: pkg={{ item }} state=latest install_recommends=no
+    with_items:
+    - python
+    - python-apt
+    - sudo
+
+  - name: INIT | Install ssh public key from current account
+    authorized_key: user="{{ ssh_user }}" key="{{ lookup('file', '~/.ssh/general.pub') }}"
+
+  - name: INIT | Install sudoers file for admin accounts
+    lineinfile: "dest=/etc/sudoers.d/admins state=present create=yes regexp='^%admins' line='%admins ALL=(ALL:ALL) NOPASSWD: SETENV: ALL' owner=root group=root mode=0440"
+
+  - name: INIT | Disable password login
+    lineinfile:
+      backup=yes
+      state=present
+      dest=/etc/ssh/sshd_config
+      regexp='^#?PasswordAuthentication'
+      line='PasswordAuthentication no'
+
+  - name: INIT | Disable root login
+    lineinfile:
+      backup=yes
+      state=present
+      dest=/etc/ssh/sshd_config
+      regexp='^#?PermitRootLogin'
+      line='PermitRootLogin no'
+
+  - name: INIT | Apt Upgrade
+    apt: update_cache=yes upgrade=full cache_valid_time=3600
+    notify: reboot server
+
+  handlers:
+  - name: reboot server
+    command: shutdown -r now

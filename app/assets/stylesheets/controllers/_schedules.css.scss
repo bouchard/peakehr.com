@@ -1,0 +1,203 @@
+@import 'partials/mixins';
+
+body.schedules {
+
+  background: adjust-lightness($light-color, -0.2%);
+  color: adjust-lightness($dark-color, 0%);
+
+  #calendar-actuator {
+    display: block;
+    margin: -45px 0 0 0;
+    padding: 0;
+    height: 100%;
+    width: 20px;
+    position: fixed;
+    text-indent: -9999px;
+    background: adjust-saturation(adjust-lightness($light-color, -20%), $saturation-adjustment) inline-image('calendar.png');
+    @include background-size(50% auto);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+  }
+  #calendar {
+    // position: fixed;
+    float: left;
+    vertical-align: top;
+    @include box-shadow(0 1px 3px 0 #aaa);
+
+    table {
+      //border-collapse: separate;
+      tr {
+        td {
+          cursor: pointer;
+        }
+        td {
+          a {
+            color: adjust-saturation($dark-color, $saturation-adjustment);
+            display: block;
+            padding: 0.3em 0.4em;
+          }
+
+          font-size: 0.9em;
+          @include heavy-font;
+          text-align: center;
+
+          color: adjust-saturation($dark-color, $saturation-adjustment);
+          text-shadow: 0 1px 0 adjust-saturation(transparentize($dark-color, 0.9), $saturation-adjustment);
+          cursor: pointer;
+          @include background(
+            linear-gradient(
+              top,
+              adjust-saturation(adjust-lightness($light-color, -3%), $saturation-adjustment),
+              adjust-saturation(adjust-lightness($light-color, -6%), $saturation-adjustment)
+            )
+          );
+          &.today {
+            @include background(
+              linear-gradient(
+                top,
+                adjust-saturation(adjust-lightness($dark-color, 10%), $saturation-adjustment),
+                adjust-saturation(adjust-lightness($dark-color, 10%), $saturation-adjustment)
+              )
+            );
+            @include box-shadow(inset 0 1px 1px $dark-color);
+            a {
+              color: adjust-saturation($light-color, $saturation-adjustment);
+            }
+          }
+          &.selected {
+            a { color: #fff; }
+            //border: 1px solid adjust-lightness($dark-color, 15%);
+            text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+            background: adjust-saturation(adjust-lightness($dark-color, 35%), $saturation-adjustment);
+            @include background(
+              linear-gradient(
+                top,
+                adjust-saturation(adjust-lightness($dark-color, 30%), $saturation-adjustment),
+                adjust-saturation(adjust-lightness($dark-color, 35%), $saturation-adjustment)
+              )
+            );
+            @include box-shadow(inset 0 1px 1px adjust-saturation($dark-color, $saturation-adjustment));
+            //background: -moz-radial-gradient(50% 50% 0deg,ellipse cover, #6eafbf, #569EB1);
+            //background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 20, from(#6eafbf), to(#569EB1));
+          }
+          &.invalid {
+            cursor: inherit;
+            &:hover {
+              @include background(
+                linear-gradient(
+                  top,
+                  adjust-lightness($dark-color, 50%),
+                  adjust-lightness($dark-color, 47%)
+                )
+              );
+            }
+          }
+          &:hover {
+            @include background(
+              linear-gradient(
+                top,
+                adjust-saturation(adjust-lightness($light-color, -12%), $saturation-adjustment),
+                adjust-saturation(adjust-lightness($light-color, -15%), $saturation-adjustment)
+              )
+            );
+          }
+        }
+        th {
+          height: 1.2em;
+          background: adjust-saturation(adjust-lightness($light-color, -1%), $saturation-adjustment);
+          color: adjust-saturation(adjust-lightness($dark-color, 10%), $saturation-adjustment);
+          border: 0;
+          border-bottom: 1px solid adjust-saturation(adjust-lightness($light-color, -5%), $saturation-adjustment);
+          font-size: 0.7em;
+        }
+        &.month {
+          th {
+            background-color: adjust-saturation(adjust-lightness($dark-color, 5%), $saturation-adjustment);
+            color: #fff;
+            border-bottom: 0;
+            font-size: 0.8em;
+          }
+        }
+      }
+    }
+  }
+  #timetable {
+    overflow: hidden;
+    > table {
+      margin: 1em auto;
+      padding: 0.5em;
+      font-size: 0.85em;
+      width: auto;
+      tr {
+        th {
+          font-size: 1.1em;
+          text-transform: uppercase;
+          padding-bottom: 1em;
+        }
+        td {
+          vertical-align: top;
+          background: adjust-saturation(adjust-lightness($light-color, 0%), $saturation-adjustment);
+          border-bottom: 1px solid adjust-saturation(adjust-lightness($light-color, -6%), $saturation-adjustment);
+          border-right: 1px solid adjust-saturation(adjust-lightness($light-color, -6%), $saturation-adjustment);
+          table.appointments {
+            width: 100%;
+            td {
+              background: transparent;
+              border: 0;
+              .appointment {
+                cursor: pointer;
+                // padding: 0.2em 0.3em;
+                padding: 0.2em 0.4em;
+                background: adjust-saturation(adjust-lightness($light-color, -20%), $saturation-adjustment);
+                @include background(
+                  linear-gradient(
+                    top,
+                    adjust-saturation(adjust-lightness($light-color, -19%), $saturation-adjustment),
+                    adjust-saturation(adjust-lightness($light-color, -21%), $saturation-adjustment)
+                  )
+                );
+                // color: adjust-saturation(adjust-lightness($light-color, -2%), $saturation-adjustment);
+                // text-shadow: 1px 1px 1px transparentize($dark-color, 0.9);
+                text-transform: none;
+                .name {
+                  text-transform: uppercase;
+                  display: block;
+                  @include heavy-font;
+                }
+                // &:hover {
+                //  background: adjust-saturation(adjust-lightness($dark-color, 10%), $saturation-adjustment);
+                //  color: $light-color;
+                //  @include background(
+                //    linear-gradient(
+                //      top,
+                //      adjust-saturation(adjust-lightness($dark-color, 10%), $saturation-adjustment),
+                //      adjust-saturation(adjust-lightness($dark-color, 8%), $saturation-adjustment)
+                //    )
+                //  );
+                // }
+              }
+            }
+          }
+        }
+        .timestamp {
+          text-align: right;
+          vertical-align: top;
+          background: transparent;
+          @include heavy-font;
+          padding-right: 1em;
+        }
+        .office-hours {
+          background: adjust-saturation(adjust-lightness($light-color, -3%), $saturation-adjustment);
+        }
+      }
+    }
+  }
+  .tasks {
+    display: block;
+    margin: 2em 0 0.2em 0;
+    padding: 0.9em 0 0 0;
+    font-size: 1.5em;
+    text-align: center;
+    @include light-font;
+  }
+}

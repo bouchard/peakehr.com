@@ -1,0 +1,15 @@
+Edema
+Localized -> Venous or lymphatic obstruction
+                   Local injury(thermal, immune, infectious, mechanical)
+
+Albumin(<25g/L) -> Severe malnutrition
+                              Cirrhosis
+                              Nephrotic syndrome
+
+Elevated JVD (jugular venous distension) -> Heart failure
+
+Azotemia (high urea) or active urine sediment -> Renal failure
+
+Drug induced -> CCB,Hydralazine,Clonidine,Methyldopa,Steroids,Estrogens,Cyclosporine,Growth hormone,       Immunotherapies, Interleukin 2
+
+Hypothyroidism -> 

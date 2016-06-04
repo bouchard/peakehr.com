@@ -1,0 +1,21 @@
+<div class="stamp-facebox">
+  <h1>Choose a stamp</h1>
+  <div class="spinner">
+    <div class="spinner-icon"></div>
+  </div>
+  <table style="display: none;">
+    <tr>
+      <td>
+        <div class="stamp-listing">
+          <input type="text" name="stamp" placeholder="Type to filter list">
+          <ul class="stamp-list">
+            <!-- Fill with Ajax request. -->
+          </ul>
+        </div>
+      </td>
+      <td>
+        <div class="preview"></div>
+      </td>
+    </tr>
+  </table>
+</div>

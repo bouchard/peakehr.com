@@ -1,0 +1,1 @@
+default._domainkey IN TXT "v=DKIM1; k=rsa; t=y; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMcAsrr/S7Oe6+fkKx4SbsnCyJgT+tcJErCB8jMHEglVJV5p0fd2lKpmQdVT0u6N3MN41gFmaFemU+P+z4bQHa2DnufPfBQA0BBQjSBLzBisJrBrd1xYNViz2/VkN3AbX+Sbm+oL09j4qYsP+Ph5rqrbDVumQDGQ9F1MR6k/ARAQIDAQAB" ; ----- DKIM key mail for peakehr.com

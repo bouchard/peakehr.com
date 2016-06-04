@@ -1,0 +1,33 @@
+---
+- name: Copy over Postfix answers for debconf-set-selections
+  copy: src=postfixconfig dest=/tmp/postfixconfig
+
+- name: Preconfigure answers for Postfix
+  shell: debconf-set-selections /tmp/postfixconfig
+
+- name: Install Postfix and OpenDKIM
+  apt: name={{ item }} state=latest
+  with_items:
+    - postfix
+    - opendkim
+    - opendkim-tools
+
+- name: Copy over Postfix config
+  copy: src=main.cf dest=/etc/postfix/main.cf
+
+- name: Copy over OpenDKIM config
+  copy: src=opendkim dest=/etc/default/opendkim
+
+- name: Copy over OpenDKIM config (second file)
+  copy: src=opendkim.conf dest=/etc/opendkim.conf
+
+- name: Copy over OpenDKIM private key
+  copy: src=dkim.key dest=/etc/postfix/dkim.key mode=600
+  notify: restart opendkim
+
+- name: Send root mail to somewhere we can get it (prod@peakehr.com)
+  lineinfile: "dest=/etc/aliases regexp='^#?root' line='root: prod@peakehr.com' state=present"
+
+- name: Configure OpenDKIM
+  lineinfile: dest=/etc/postfix/main.cf regexp="^mydestination" line="mydestination = " state=present
+  notify: restart postfix

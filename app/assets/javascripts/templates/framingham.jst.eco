@@ -1,0 +1,67 @@
+<div class="calculator-facebox framingham">
+  <h1>Framingham Coronary Heart Disease Risk Score</h1>
+  <h2>10 year estimation of risk of developing Coronary Heart Disease in patients aged 30 - 74 years old, without overt CHD at baseline examination.</h2>
+  <ul>
+    <li>Sex:
+      <select name="sex">
+        <option value="">-</option>
+        <option value="m" <%= 'selected' if window.patient && window.patient.sex == 'm' %>>Male</option>
+        <option value="f" <%= 'selected' if window.patient && window.patient.sex == 'f' %>>Female</option>
+      </select>
+    </li>
+    <li>Age:
+      <select name="age">
+        <option value="">-</option>
+        <% age_ranges = [[30,34],[35,39],[40,44],[45,49],[50,54],[55,59],[60,64],[65,69],[70,74]] %>
+        <% for a, i in age_ranges: %>
+          <option value="<%= i %>" <%= 'selected' if window.patient && _.contains(_.range(a[0], a[1]), window.patient.age) %>><%= "#{a[0]}-#{a[1]}" %></option>
+        <% end %>
+      </select>
+    </li>
+    <li>Total Cholesterol (mmol/L):
+      <select name="tc">
+        <option value="">-</option>
+        <% tc_ranges = [[4.14],[4.14,5.17],[5.18,6.21],[6.22,7.24],[7.24]] %>
+        <% for a, i in tc_ranges: %>
+          <option value="<%= i %>" ><%= if a.length > 1 then "#{a[0]}-#{a[1]}" else "#{if i == 0 then '<' else '>'}#{a[0]}" %></option>
+        <% end %>
+      </select>
+    </li>
+    <li>HDL (mmol/L):
+      <select name="hdl">
+        <option value="">-</option>
+        <% hdl_ranges = [[.91],[.91,1.16],[1.17,1.29],[1.30,1.55],[1.56]] %>
+        <% for a, i in hdl_ranges: %>
+          <option value="<%= i %>" ><%= if a.length > 1 then "#{a[0]}-#{a[1]}" else "#{if i == 0 then '<' else '>'}#{a[0]}" %></option>
+        <% end %>
+      </select>
+    </li>
+    <li>Blood Pressure (mmHg, highest of either):
+      <select name="bp">
+        <option value="">-</option>
+        <% bp_ranges = [['SBP < 120','DBP < 80'],['SBP 120-129','DBP 80-84'],['SBP 130-139','DBP 85-89'],['SBP 140-149','DBP 90-99'],['SBP >=150','DBP >=100']] %>
+        <% for a, i in bp_ranges: %>
+          <option value="<%= i %>" ><%= "#{a[0]} OR #{a[1]}" %></option>
+        <% end %>
+      </select>
+    </li>
+    <li>
+      <label>Family History of CVD (first-degree relative &lt;55 years for men or &lt;65 years for women)?
+        <input type="checkbox" name="famhx" value="1">
+      </label>
+    </li>
+    <li>
+      <label>Diabetic?
+        <input type="checkbox" name="diabetic" value="1">
+      </label>
+    </li>
+    <li>
+      <label>Smoker?
+        <input type="checkbox" name="smoker" value="1">
+      </label>
+    </li>
+  </ul>
+  <div class="answer">10 Year CHD Risk: <span class="answer-box risk">-</span>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cardiovascular Age: <span class="answer-box age">-</span> years</div>
+  <input type="submit" name="save" value="Add to Encounter" disabled>
+  <div class="reference">Anderson et al. CCS Dyslipidemia Guidelines Update 2012</div>
+</div>

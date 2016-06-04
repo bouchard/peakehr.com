@@ -1,0 +1,38 @@
+# Chest Pain
+
+# Subjective:
+
+Onset?
+Provoking/palliating factors?:
+Quality of pain:
+Radiation:
+Severity:
+Timing:
+Previous episode?:
+Effect on function:
+Patient concern or idea on cause:
+Risk factors for cad:
+Smoker:
+FH:
+Htn:
+Hyperlipidemia:
+Past history of cad:(mi in female 65/male 55)
+DM:
+Obesity:
+Sedentary:
+
+Associated symptoms:
+Fever?
+Edema?
+Syncope?
+SOB?
+Orthopnea?
+Pnd?
+Hemoptysis?
+Cough(productive vs non productive)?
+Pleuritic chest pain?
+Diaphoresis?
+Palpitations?
+Nocturia?
+Leg pain?
+Nausea/vomiting?

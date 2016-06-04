@@ -1,0 +1,73 @@
+<%= render 'patients/sidebar' %>
+<div id="medications">
+  <h1>
+    Active Medications
+    <%= link_to('new', new_patient_prescription_path(@patient)) %>
+  </h1>
+  <% @active_medications = @patient.medications.active %>
+  <table class="active medications">
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Dose and Route</th>
+      <th>Started</th>
+      <th>Duration</th>
+      <th># Refills</th>
+      <th>Expires</th>
+    </tr>
+    <% @active_medications.each do |m| %>
+      <% l = m.latest_prescription %>
+      <tr>
+        <td class="checkbox"><%= check_box_tag(:name, 1, checked: (l.created_at > 1.day.ago)) %></td>
+        <% if l.created_at > 1.day.ago %>
+          <td><strong><%= m.name %></strong></td>
+        <% else %>
+          <td><%= m.name %></td>
+        <% end %>
+        <td><%= l.dose_and_route %></td>
+        <td><%= l.start_date %></td>
+        <td><%= l.duration_integer %> <%= l.duration_multiplier_name %> (<%= l.duration_in_days %> days)</td>
+        <td><%= l.refills %></td>
+        <td><%= l.expiry_date %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <h1>External Medications</h1>
+  <% @external_medications = @patient.medications.external %>
+  <table class="external medications">
+    <tr>
+      <th>Name</th>
+      <th>Dose and Route</th>
+    </tr>
+    <% @external_medications.each do |m| %>
+      <tr>
+        <td><strong><%= m.name %></strong></td>
+        <td><%= m.external_dose_and_route %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <h1>Expired Prescriptions</h1>
+  <% @old_scripts = @patient.prescriptions.expired %>
+  <table class="expired medications">
+    <tr>
+      <th>Name</th>
+      <th>Dose and Route</th>
+      <th>Started</th>
+      <th>Duration</th>
+      <th># Refills</th>
+      <th>Expires</th>
+    </tr>
+    <% @old_scripts.each do |p| %>
+      <tr>
+        <td><strong><%= p.medication.name %></strong></td>
+        <td><%= p.dose_and_route %></td>
+        <td><%= p.start_date %></td>
+        <td><%= p.duration_in_days %></td>
+        <td><%= p.refills %></td>
+        <td><%= p.expiry_date %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

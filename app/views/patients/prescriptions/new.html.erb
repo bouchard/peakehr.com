@@ -1,0 +1,46 @@
+<%= render 'patients/sidebar' %>
+<div id="prescriptions">
+  <h1>New Prescription</h1>
+  <%= form_for(@prescription, url: patient_prescriptions_path, html: { class: 'new_prescription' }) do |f| %>
+    <table class="new_prescription">
+      <tr>
+        <td colspan="2">
+          <%= f.label :name, "Drug Name:" %>
+          <%= f.text_field :name, size: 30 %>
+        </td>
+        <td>
+          <%= f.label :dose_and_route, "Dose and Route:" %>
+          <%= f.text_field :dose_and_route, size: 30 %>
+        </td>
+        <td>
+          <%= f.label :duration_integer, "Duration:" %>
+          <%= f.text_field :duration_integer, placeholder: '#', size: 3 %>
+          <%= f.select :duration_multiplier, Prescription::DURATION_MULTIPLIERS %>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4" class="flash-container"></td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <%= f.label :comment, "Comments for Pharmacy or Patient:" %>
+          <%= f.text_area :comment, rows: 4, cols: 80 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :refills, "Refills:" %>
+          <%= f.text_field :refills, size: 4 %>
+        </td>
+        <td>
+          <%= f.label :pretty_start_date, "Start Date:" %>
+          <%= f.text_field :pretty_start_date, placeholder: Date.today.to_s(:long), size: 16 %>
+        </td>
+        <td colspan="2">
+          <%= f.submit 'Approve and Print' %>
+          <%= f.submit 'Save' %>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+</div>

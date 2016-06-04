@@ -1,0 +1,95 @@
+<% @client_side_state[:patient_id] = @patient.id %>
+<aside>
+  <% unless can?(:be_most_responsible_for, :all) %>
+    <div class="working-under">
+      I'm working with: <%= collection_select(:encounter, :working_under_id, Staff.is?(:physician), :id, :full_name_with_title, selected: current_responsible_clinician.id) %>
+    </div>
+  <% end %>
+  <div class="demographics">
+    <%= link_to("Born: #{@patient.date_of_birth.to_s(:short)}", patient_demographics_path(patient_id: @patient.demographics.patient_id), class: 'dob') %>
+    //
+    <%= link_to(@patient.occupation, patient_demographics_path(patient_id: @patient.demographics.patient_id), class: 'occupation') %>
+    <!-- // -->
+    <br>
+    <%= link_to("HSN: #{@patient.health_number}", patient_demographics_path(patient_id: @patient.demographics.patient_id), class: 'health-number') %>
+    //
+    <%= link_to("chart \##{@patient.chart_id}", patient_demographics_path(patient_id: @patient.demographics.patient_id), class: 'chart-id') %>
+    <div class="hover-overlay">
+      Next of kin:
+    </div>
+  </div>
+  <div class="slide">
+
+    <article class="tasks">
+      <header>
+        Tasks &amp; Reminders
+        <%= link_to(new_task_path) do %>
+          <i class="fa fa-plus-sign"></i>
+        <% end %>
+      </header>
+      <ul>
+        <% @patient.reminders.each do |r| %>
+          <li><%= r.title %><span class="comment"><%= r.comment %></span></li>
+        <% end %>
+      </ul>
+    </article>
+
+    <% if @patient.conditions.length > 0 %>
+    <article class="profile" href="<%= patient_profile_path(@patient) %>">
+      <header>
+        Profile
+        <%= link_to(new_profile_path) do %>
+          <i class="fa fa-plus-sign"></i>
+        <% end %>
+      </header>
+      <ul>
+        <% @patient.conditions.each do |cond| %>
+        <li><%= cond.name %><span class="comment"><%= cond.details %></span></li>
+        <% end %>
+      </ul>
+    </article>
+    <% end %>
+
+    <article class="active-medications" href="<%= patient_medications_path(@patient) %>">
+      <header>
+        Active Medications
+        <%= link_to(new_patient_prescription_path(@patient)) do %>
+          <i class="fa fa-plus-sign"></i>
+        <% end %>
+      </header>
+      <ul>
+        <% @patient.medications.each do |m| %>
+          <% unless m.new_record? %>
+          <li>
+            <%= m.name %>
+            <span class="dose-and-route"><%= m.latest_prescription.dose_and_route %></span>
+            <span class="hover-overlay">
+              <div><%= 'This is an external medication.' if m.external %></div>
+              <div><%= 'First started: '.html_safe + timeago(m.start_date) if m.start_date %></div>
+              <div><%= m.expired? ? '<strong>EXPIRED:</strong>'.html_safe : 'Current prescription expires:' %> <%= timeago(m.expiry_date) if m.expiry_date %></div>
+            </span>
+          </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </article>
+
+    <% if @patient.study_enrollments.count > 0 %>
+    <article class="study-enrollments">
+      <header>
+        Study Enrollments
+      </header>
+      <ul>
+        <% @patient.study_enrollments.each do |s| %>
+          <li>
+            <%= s.study.name %>
+            <span class="consented-at">Consented at: <%= timeago(s.consent_obtained_at) %></span>
+            <span class="consented-by">By: <%= s.enrolling_staff.full_name_with_title %></span>
+          </li>
+        <% end %>
+      </ul>
+    </article>
+    <% end %>
+
+  </div>
+</aside>

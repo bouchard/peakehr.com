@@ -1,0 +1,32 @@
+<header>
+  <% if signed_in? %>
+    <div class="right">
+      <%= link_to(current_user.full_name_with_title, user_path(id: current_user.id)) %> &mdash; <%= CLINIC_NAME %>
+      <%= link_to('<i class="fa fa-signout"></i>'.html_safe, session_path, method: :delete, class: 'link signout') %>
+    </div>
+  <% end %>
+
+  <a href="/" class="logo">Inspired EHR</a>
+
+  <% if signed_in? %>
+    <div id="search-bar">
+      <div id="search-content" contenteditable="true">
+        <% if @patient %>
+          <% if controller.controller_name.match('medications') %>
+          Medications for:
+          <% elsif controller.controller_name.match('demographics') %>
+          Demographics:
+          <% elsif controller.controller_name.match('profile') %>
+          Patient Profile:
+          <% end %>
+          <i class="fa fa-user"></i>
+          <%= @patient.full_name %> <span class="separator">//</span> <%= @patient.short_age_in_words %><span class="<%= @patient.sex %>"> <%= @patient.sex == 'm' ? 'male' : 'female' %></span>
+        <% elsif @user %>
+          <i class="fa fa-user"></i> Staff Preferences: <%= @user.full_name_with_title %>
+        <% elsif @date %>
+          <i class="fa fa-calendar"></i> <%= @date.to_s(:long_with_wday) %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</header>

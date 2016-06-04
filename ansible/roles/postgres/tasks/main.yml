@@ -1,0 +1,27 @@
+---
+- name: Install Postgres and required packages
+  apt: pkg={{ item }} state=present update_cache=yes cache_valid_time=3600
+  with_items:
+    - postgresql
+    - libpq-dev
+    - python-psycopg2
+
+- name: Start Postgres
+  service: name=postgresql state=started enabled=true
+
+- name: Create user
+  postgresql_user: name=peakehr role_attr_flags=CREATEDB,NOSUPERUSER state=present
+  sudo_user: postgres
+
+- name: Create database
+  postgresql_db: name=peakehr owner=peakehr
+  sudo_user: postgres
+
+- name: Create database
+  postgresql_db: name=reference_data owner=peakehr
+  sudo_user: postgres
+
+- name: Trust local users for Postgres
+  lineinfile: dest=/etc/postgresql/9.3/main/pg_hba.conf regexp="^local\s+all\s+all" line="local   all             all                                trust" state=present
+  notify:
+    - restart postgresql

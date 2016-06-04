@@ -1,0 +1,139 @@
+@import 'partials/mixins';
+
+html.sessions, html.sessions body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body.sessions {
+
+  background-color: adjust-saturation(adjust-lightness($dark-color, 35%), $saturation-adjustment);
+  background-image: image-url('splash.jpg');
+  @include background-size(100% auto);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+
+  > header {
+    background-color: adjust-saturation(adjust-lightness($dark-color, 15%), $saturation-adjustment);
+    .logo {
+      background: inline-image('header-left-light.png');
+      @include background-size(95px auto);
+    }
+  }
+
+  section#main {
+    min-height: 100%;
+  }
+
+  footer {
+    display: none;
+  }
+
+  .sign-in-container {
+    margin: -$header-height auto 0 auto;
+    padding: 100px 0;
+    width: 1024px;
+
+    .welcome, .sign-in {
+      float: left;
+      margin: 0;
+      padding: 10px;
+      color: #fff;
+    }
+
+    .welcome {
+      width: 1024px - 40px - 400px;
+      @include title-font;
+      h3 {
+        margin: 0;
+        color: adjust-lightness($light-color, -10%);
+      }
+      h1 {
+        margin: 0;
+        font-size: 2.8em;
+      }
+      h2.contact-details {
+        margin-left: 5px;
+        padding-left: 10px;
+        padding-bottom: 3px;
+        border-left: 2px solid adjust-lightness($light-color, -20%);
+        font-size: 1.1em;
+      }
+    }
+
+    .sign-in {
+      width: 400px;
+
+      h1, h2 {
+        margin-top: 0;
+      }
+      h2 {
+        margin-bottom: 0;
+        text-transform: uppercase;
+        color: adjust-lightness($light-color, -20%);
+      }
+      input[type=text], input[type=password] {
+        @include common-field-styles;
+        display: block;
+        margin: 0 0 10px 0;
+        width: 400px;
+        background: adjust-saturation(adjust-lightness($dark-color, 15%), $saturation-adjustment);
+        border: 0;
+        color: #fff;
+        &:focus, &:hover {
+          color: #fff;
+          @include box-shadow(none);
+          background: adjust-saturation(adjust-lightness($dark-color, 25%), $saturation-adjustment);
+        }
+      }
+      input[type=submit] {
+        @include common-button-styles;
+        display: block;
+        margin: 25px 0 0 0;
+        width: 400px;
+        color: #000;
+        @include background-image(
+          linear-gradient(
+            color-stops(
+              adjust-saturation(adjust-lightness($dark-color, 36%), $saturation-adjustment),
+              adjust-saturation(adjust-lightness($dark-color, 34%), $saturation-adjustment),
+              adjust-saturation(adjust-lightness($dark-color, 32%), $saturation-adjustment)
+            )
+          )
+        );
+        &:hover, &:focus {
+          @include background-image(
+            linear-gradient(
+              color-stops(
+                adjust-saturation(adjust-lightness($dark-color, 46%), $saturation-adjustment),
+                adjust-saturation(adjust-lightness($dark-color, 44%), $saturation-adjustment),
+                adjust-saturation(adjust-lightness($dark-color, 42%), $saturation-adjustment)
+              )
+            )
+          );
+        }
+      }
+
+    }
+  }
+
+  &.setup_api_tokens {
+    h1, h2 {
+      display: block;
+      text-align: center;
+    }
+    h1 {
+      margin: 3em 0 0.5em 0;
+    }
+    h2 {
+      margin: 0 0 1.2em 0;
+    }
+  }
+}
+
+.qrcode {
+  display: block;
+  margin: 10px auto;
+  background: #fff;
+  border: 10px solid #fff;
+}

@@ -1,0 +1,41 @@
+@mixin regular-font() {
+  font-family: 'Lato';
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin heavy-font() {
+  font-family: 'Lato Bold';
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin italic-font() {
+  font-family: 'Lato Italic';
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin heavy-italic-font() {
+  font-family: 'Lato Bold Italic';
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin light-font() {
+  font-family: 'Lato Light';
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin title-font() {
+  font-family: 'Raleway Light';
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin monospace-font() {
+  font-family: Monaco, "Andale Mono", monospace;
+  font-weight: normal;
+  font-style: normal;
+}

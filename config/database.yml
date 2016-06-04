@@ -1,0 +1,36 @@
+development:
+    adapter: postgresql
+    encoding: unicode
+    database: peakehr
+    username: peakehr
+    pool: 10
+
+test:
+    adapter: postgresql
+    encoding: unicode
+    database: peakehr_test
+    username: peakehr
+    pool: 10
+
+reference_data_development:
+    adapter: postgresql
+    encoding: unicode
+    database: reference_data
+    username: peakehr
+    pool: 10
+
+production:
+    adapter: postgresql
+    host: /var/run/postgresql
+    encoding: unicode
+    database: peakehr
+    username: peakehr
+    pool: 10
+
+reference_data_production:
+    adapter: postgresql
+    host: /var/run/postgresql
+    encoding: unicode
+    database: reference_data
+    username: peakehr
+    pool: 10

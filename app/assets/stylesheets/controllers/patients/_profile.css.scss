@@ -1,0 +1,64 @@
+@import 'partials/mixins';
+
+body.patients.profile {
+  #profile {
+    margin-right: $sidebar-width;
+    padding: 20px;
+    h1 {
+      // font-size: 1.2em;
+      &:first-of-type {
+        margin: 0;
+      }
+      // color: #f00;
+    }
+    table.conditions {
+      width: 100%;
+      tr {
+        @include background(
+          linear-gradient(top,
+            adjust-saturation(adjust-lightness($accent2, 20%), $saturation-adjustment + 80%),
+            adjust-saturation(adjust-lightness($accent2, 18%), $saturation-adjustment + 80%),
+            adjust-saturation(adjust-lightness($accent2, 16%), $saturation-adjustment + 80%)
+          )
+        );
+        &:nth-of-type(even) {
+          @include background(
+            linear-gradient(top,
+              adjust-saturation(adjust-lightness($accent2, 30%), $saturation-adjustment + 80%),
+              adjust-saturation(adjust-lightness($accent2, 29%), $saturation-adjustment + 80%),
+              adjust-saturation(adjust-lightness($accent2, 28%), $saturation-adjustment + 80%)
+            )
+          );
+        }
+        &:hover {
+          @include background(
+            linear-gradient(top,
+              adjust-saturation(adjust-lightness($accent2, 40%), $saturation-adjustment + 80%),
+              adjust-saturation(adjust-lightness($accent2, 38%), $saturation-adjustment + 80%),
+              adjust-saturation(adjust-lightness($accent2, 36%), $saturation-adjustment + 80%)
+            )
+          );
+        }
+        th {
+          text-align: left;
+          @include regular-font;
+          padding: 3px 5px;
+          font-size: 0.9em;
+          @include background(
+            linear-gradient(
+              top,
+              adjust-saturation(adjust-lightness($dark-color, 21%), $saturation-adjustment),
+              adjust-saturation(adjust-lightness($dark-color, 19%), $saturation-adjustment),
+              adjust-saturation(adjust-lightness($dark-color, 17%), $saturation-adjustment)
+            )
+          );
+          color: $accent2;
+        }
+        td {
+          padding: 5px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+rm -rf public/system/attachments && bundle exec rake db:drop:all && bundle exec rake db:create:all && bundle exec rake db:migrate && bundle exec rake db:seed && bundle exec rake db:seed_patients NUMBER=200

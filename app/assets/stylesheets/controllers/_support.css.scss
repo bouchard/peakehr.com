@@ -1,0 +1,55 @@
+@import 'partials/mixins';
+
+body.support {
+  h1 {
+    text-align: center;
+  }
+  #support-form {
+    margin: 0 auto;
+    width: 960px;
+    p {
+      font-size: 1.2em;
+    }
+    margin-bottom: 40px;
+    table {
+      width: 85%;
+      margin: 10px auto;
+      border-collapse: collapse;
+      border: 0;
+      tr {
+        td {
+          padding: 10px;
+          &:first-of-type {
+            width: 15%;
+            text-align: right;
+            // margin-right: 10px;
+            @include heavy-font;
+          }
+          &.submit {
+            margin-top: 0;
+            padding-top: 0;
+            input[type=submit] {
+              margin: 0 40px 0 auto;
+              // width: 79.6%;
+              width: 92%;
+            }
+          }
+        }
+      }
+    }
+    label {
+      display: inline;
+    }
+    input[type=text], input[type=email] {
+      display: inline-block;
+      //width: 300px;
+      width: 94%;
+      margin: 0;
+    }
+    textarea {
+      width: 94%;
+      height: 250px;
+      margin-bottom: 0.5em;
+    }
+  }
+}

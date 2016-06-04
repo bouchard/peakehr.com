@@ -1,0 +1,84 @@
+@import 'compass';
+@import 'constants';
+@import 'font-mixins';
+
+@mixin common-field-styles {
+  margin: 0 0 10px 0;
+  padding: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1.09em;
+  box-sizing: border-box;
+  @include background-image(
+    linear-gradient(
+      color-stops(
+        adjust-lightness($light-color, 38%),
+        adjust-lightness($light-color, 36%),
+        adjust-lightness($light-color, 34%)
+      )
+    )
+  );
+  @include box-shadow(inset 1px 1px 3px rgba(0,0,0,0.1));
+  color: #000;
+  border: 1px solid $light-color;
+  @include border-radius(8px);
+
+  &:focus {
+    color: #000;
+    background: #fff;
+    outline: none;
+  }
+  &:hover {
+    border-color: $light-color;
+    @include box-shadow(0 0 4px $light-color);
+    outline: none;
+  }
+  // @include transition-property('all');
+  // @include transition-duration(50ms);
+
+}
+
+@mixin common-button-styles {
+
+  @include common-field-styles;
+
+  padding: 8px 36px;
+  color: rgba(0,0,0,0.6);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.25);
+  @include background-image(
+    linear-gradient(
+      color-stops(
+        adjust-lightness($light-color, 36%),
+        adjust-lightness($light-color, 34%),
+        adjust-lightness($light-color, 32%)
+      )
+    )
+  );
+  border: 0;
+  @include border-radius(8px);
+  @include box-shadow(inset 0 1px 0 rgba(255,255,255,0.40), 0 0 1px rgba(0,0,0,0.50), 0 1px 4px rgba(0,0,0,0.25));
+
+  &:hover, &:focus {
+    color: rgba(0,0,0,0.9);
+    outline: none;
+    @include box-shadow(inset 0 1px 0 rgba(255,255,255,0.40), 0 0 1px rgba(0,0,0,0.50), 0 1px 4px rgba(0,0,0,0.25));
+    // @include background-image(
+    //  linear-gradient(
+    //    color-stops(
+    //      adjust-lightness($light-color, 36%),
+    //      adjust-lightness($light-color, 34%),
+    //      adjust-lightness($light-color, 32%)
+    //    )
+    //  )
+    // );
+    background: #fff;
+  }
+
+  &:active {
+    color: rgba(0,0,0,1.0);
+    background: darken(#e0e0e0, 10%);
+    @include background-image(linear-gradient(color-stops(#e0e0e0, darken(#e0e0e0, 10%))));
+    @include box-shadow(inset 0 3px 4px rgba(0,0,0,0.20), inset 0 0 2px rgba(0,0,0,0.50));
+  }
+
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html class="<%= [ controller.controller_path.split('/'), controller.action_name ].compact.join(' ') %>">
+<head>
+  <title><%= CLINIC_NAME %> - Inspired EHR</title>
+  <link rel="shortcut icon" type="image/png" href="<%= image_path('favicon.png') %>">
+  <%= stylesheet_link_tag :application, 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag :application, 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <%= content_for(:head) %>
+</head>
+<body class="<%= [ controller.controller_path.split('/'), controller.action_name ].compact.join(' ') %>">
+
+  <%= render 'header' %>
+
+  <section id="main">
+  <%= flash_messages(flash) %>
+  <%= content_for?(:body) ? content_for(:body) : yield %>
+  </section>
+
+  <%= render 'footer' %>
+
+  <script type="text/javascript">
+  window.clientSideState = <%= @client_side_state.to_json.html_safe %>;
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+APPOINTMENT_INTERVAL = 15.minutes

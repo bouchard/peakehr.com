@@ -1,0 +1,40 @@
+<%= render 'patients/sidebar' %>
+<div id="enrollments">
+  <h1>Enroll Your Patient</h1>
+  <h2>Study: <%= @study.name %></h2>
+  <%= form_for(@study_enrollment, url: patient_enrollments_path(:study_id => @study.id), html: { class: 'new_study_enrollment' }) do |f| %>
+
+    <p>This patient has been identified by an automatic algorithm to potentially be in the group of patients that are eligible to participate in this research study.</p>
+
+    <p><%= @study.description %></p>
+
+    <p>Please confirm the following eligibility requirements for (and with) your patient:</p>
+    <ul>
+    <% if @study.eligibility_requirements.blank? %>
+      <li>There are no eligibility requirements that patients need to meet for this study.</li>
+    <% else %>
+      <% @study.eligibility_requirements.each do |e| %>
+      <li><strong><%= e %></strong></li>
+      <% end %>
+    <% end %>
+    </ul>
+    <% if @study.study_type == 'intention_to_treat' %>
+      <p>This is an <strong>intention to treat</strong> medication study. By consenting your patient to participate in this study, the patient will be randomized to one of the following medications:</p>
+      <ul>
+        <% @study.randomize_from.each do |d| %>
+        <li><strong><%= d %></strong></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <%= link_to(@study.consent_form_link, :class => 'consent-form-link') do %>
+      Please click here to download and print the consent form for this study.
+    <% end %>
+    <p class="centered">
+      Please confirm that you have printed and discussed the study consent form with the patient, and that the form has been signed, witnessed, and will be scanned into the EMR.
+      <br><br>
+      <strong>I confirm I have obtained consent: &nbsp;<%= f.check_box :consent_obtained %></strong>
+      <br><br><br>
+      <%= f.submit 'Confirm consent and enroll patient' %>
+    </p>
+  <% end %>
+</div>

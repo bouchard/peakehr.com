@@ -1,0 +1,14 @@
+# COPD
+
+Smoking Cessation
+Cardinal Symptoms:
+  - Increased dyspnea: <Yes/No>
+  - Increased sputum purulence: <Yes/No>
+  - Increased sputum quantity: <Yes/No>
+  - Hospitalizations +/- Ventilation: <Yes/No>
+Pulmonary rehab:
+  - Latest spirometry, SpO2, ABG: <>
+  - Qualifies for home oxygen: <Yes/No>
+  - Home OT: <Yes/No>
+Immunizations (flu, pneumo) up to date: <Yes/No>
+Medication Review: <Reviewed>

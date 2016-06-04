@@ -1,0 +1,13 @@
+New support request from website request form.
+
+<% if @params[:class] %>
+Signed-in user: <%= @params[:class] %> with ID #<%= @params[:id] %>.
+
+<% end %>
+Name: <%= @params[:name] %>
+
+Email: <%= @params[:email] %>
+
+Comment: <%= @params[:comment] %>
+
+Referrer: <%= @params[:referrer] %>

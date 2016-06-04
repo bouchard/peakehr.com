@@ -1,0 +1,19 @@
+<%= render 'patients/sidebar' %>
+<div id="profile">
+  <h1>Active Conditions</h1>
+  <% @conditions = @patient.conditions %>
+  <table class="active conditions">
+    <tr>
+      <th>Name</th>
+      <th>Details</th>
+      <th>Diagnosed At</th>
+    </tr>
+    <% @conditions.each do |c| %>
+      <tr>
+        <td><strong><%= c.name %></strong></td>
+        <td><%= c.details %></td>
+        <td><%= c.diagnosed_at %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

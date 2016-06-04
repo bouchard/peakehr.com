@@ -1,0 +1,42 @@
+<% provide(:page_title, 'Need Help? Have Questions?') %>
+
+<h1>Need Help? Have Questions?</h1>
+
+<%= form_tag(support_path, method: :post, id: 'support-form') do %>
+  <p>Need some help using PeakEHR, or have an issue, problem or concern? Please use the form below to write a quick note and we'll get back to you soon.</p>
+
+  <%= hidden_field_tag(:referrer, request.referer) unless request.referer.nil? %>
+  <%= hidden_field_tag(:class, current_user.class) %>
+  <%= hidden_field_tag(:id, current_user.id) %>
+  <%= hidden_field_tag(:username, current_user.username) %>
+
+  <table>
+    <tr>
+      <td>
+        <label for="name">Your name:</label>
+      </td>
+      <td>
+        <strong><%= patient_signed_in? ? current_user.full_name : current_user.full_name_with_title %></strong>
+      </td>
+    </tr>
+    <% unless request.referer.nil? %>
+    <tr>
+      <td></td>
+      <td>Your request will include the page you just came from: <strong><%= request.referer %></strong>.</td>
+    </tr>
+    <% end %>
+    <tr>
+      <td>
+        <!-- <label for="email">Your question:</label> -->
+      </td>
+      <td>
+        <%= text_area_tag :comment, '', placeholder: 'What would you like to ask?', required: true %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="submit">
+        <input type="submit" value="Fire away!">
+      </td>
+    </tr>
+  </table>
+<% end %>

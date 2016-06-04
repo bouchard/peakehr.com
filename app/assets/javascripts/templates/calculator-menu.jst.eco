@@ -1,0 +1,8 @@
+<div class="calculator-menu-facebox">
+  <h1>Choose a calculator</h1>
+  <ul>
+    <li><a rel="framingham" href="#">Framingham 10 Year Risk Score</a></li>
+    <li><a rel="who-chart" href="#">WHO Pediatric Growth Chart</a></li>
+    <li><a rel="frax" href="#">FRAX 10 Year Fracture Risk Score</a></li>
+  </ul>
+</div>

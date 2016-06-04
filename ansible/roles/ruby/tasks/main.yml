@@ -1,0 +1,17 @@
+---
+- name: Download Ruby
+  get_url: url=http://cache.ruby-lang.org/pub/ruby/{{ ruby_major_version }}.{{ ruby_minor_version }}/ruby-{{ ruby_major_version }}.{{ ruby_minor_version }}.{{ ruby_patch_version }}.tar.gz dest=/tmp/ruby-{{ ruby_major_version }}.{{ ruby_minor_version }}.{{ ruby_patch_version }}.tar.gz
+
+- name: Untar Ruby source
+  command: creates=/tmp/ruby-{{ ruby_major_version }}.{{ ruby_minor_version }}.{{ ruby_patch_version }} tar -C /tmp -xzvf /tmp/ruby-{{ ruby_major_version }}.{{ ruby_minor_version }}.{{ ruby_patch_version }}.tar.gz
+
+- name: Configure Ruby
+  shell: "cd /tmp/ruby-{{ ruby_major_version }}.{{ ruby_minor_version }}.{{ ruby_patch_version }} && ./configure --prefix=/usr/local"
+
+# - name: Patch Ruby for Readline bug
+#   shell: "cd /tmp/ruby-{{ ruby_major_version }}.{{ ruby_minor_version }}.{{ ruby_patch_version }} && (curl -fsSL https://gist.github.com/mislav/a18b9d7f0dc5b9efc162.txt | patch -N -p0)"
+#   sudo: true
+
+- name: Install Ruby
+  shell: "cd /tmp/ruby-{{ ruby_major_version }}.{{ ruby_minor_version }}.{{ ruby_patch_version }} && make install"
+  sudo: true

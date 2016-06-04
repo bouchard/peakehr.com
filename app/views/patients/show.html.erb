@@ -1,0 +1,99 @@
+<%= render 'patients/sidebar' %>
+<% @client_side_state[:default_letter_greeting] = current_user.default_letter_greeting %>
+<% @encounters = @patient.encounters %>
+<% @letters = @patient.letters %>
+<div class="articles">
+  <% @articles = (@encounters + @letters).sort_by{ |a| a.created_at || Time.now } %>
+  <% @articles.each do |a| %>
+    <% cache ['v1', a ] do %>
+      <% if a.class == Encounter %>
+        <article data-state="<%= a.state %>" data-type="encounter" data-id="<%= a.id || '' %>"<% unless a.persisted? %> style="display: none;"<% end %>>
+          <header class="persisted">
+            <div class="square"></div>
+            <%= timeago(a.created_at || Time.now) %>
+             &mdash;
+            <div class="title"><%= a.title %></div>
+            <% unless a.signed_off? %>
+              <i class="fa fa-unlock fa-lg"></i>
+            <% end %>
+            <% if !a.signed_off? || a.attachments.length > 0 %>
+              <i class="fa fa-paperclip fa-lg"></i>
+            <% end %>
+          </header>
+          <% unless a.persisted? %>
+            <header class="new-encounter">
+              <div class="square"></div>
+              <div class="title">New Encounter</div>
+            </header>
+          <% end %>
+          <div class="accordion">
+            <% if a.attachments.length > 0 %>
+              <div class="attachments">
+                <% a.attachments.each do |attach| %>
+                  <%= link_to(image_tag(attach.file.url(:thumb)), attach.file.url(:large), class: 'attachment', title: attach.comment, target: '_blank') %>
+                <% end %>
+              </div>
+            <% end %>
+            <div class="body" contenteditable="<%= !a.signed_off? %>"><%= a.content %></div>
+            <footer>
+              <%= form_for(:encounter, html: { class: 'diagnosis' }) do |f| %>
+                <%= f.text_field :icd10_code, placeholder: 'Diagnosis' %>
+              <% end %>
+              <% if a.signed_off? %>
+              Signed off <%= a.signed_off_at.to_s(:friendly_long) %> by <%= a.signer.full_name_with_title %>
+              <% else %>
+              Responsible Clinician: <%= a.responsible_clinician.full_name_with_title %>
+              <% end %>
+            </footer>
+          </div>
+        </article>
+      <% end %>
+      <% if a.class == Letter %>
+        <article data-state="<%= a.state %>" data-type="letter" data-id="<%= a.id || '' %>"<% unless a.persisted? %> style="display: none;"<% end %>>
+          <header class="persisted">
+            <div class="square"></div>
+            <%= timeago(a.created_at || Time.now) %>
+             &mdash;
+            <div class="title"><%= a.title.match(/letter/i) ? a.title : "Letter: #{a.title}" %></div>
+            <% unless a.signed_off? %><i class="fa fa-unlock fa-lg"></i><% end %>
+          </header>
+          <% unless a.persisted? %>
+            <header class="new-letter">
+              <div class="square"></div>
+              <div class="title">New Letter</div>
+            </header>
+          <% end %>
+          <div class="accordion">
+            <div class="body">
+              <% if a.signed_off? %>
+                <%= a.signed_off_at.to_date.to_s(:long) %>
+                <br>
+                <%= raw(a.to_address.gsub(/[<>]/,'').gsub("\n",'<br>')) %>
+                <br><br>
+                <%= raw(a.content.gsub('<','&lt;').gsub('>','&gt;').gsub("\n",'<br>')) %>
+              <% else %>
+                <%= form_for a do |f| %>
+                  <%= f.text_area :to_address, placeholder: 'Address' %>
+                  <%= f.text_area :content, placeholder: 'Content' %>
+                <% end %>
+              <% end %>
+            </div>
+            <footer>
+              <% if a.signed_off? %>
+              Signed off <%= a.signed_off_at.to_s(:friendly_long) %> by <%= a.creator.full_name_with_title %>
+              <% else %>
+              Created by <%= (a.creator || current_user).full_name_with_title %>
+              <% end %>
+              <%= link_to('<i class="fa fa-print"></i> Print'.html_safe, letter_path(id: a.id || 'PLACEHOLDER', format: :pdf), class: 'print') %>
+            </footer>
+          </div>
+        </article>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% if @encounters.today.not_signed_off.empty? %>
+    <div id="new-encounter">
+      <button>New Encounter Today</button>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,13 @@
+---
+- name: Install Redis
+  apt: pkg={{ item }} state=present update_cache=yes cache_valid_time=3600
+  with_items:
+    - redis-server
+
+- name: Start Redis
+  service: name=redis-server state=started enabled=true
+
+- name: Copy Redis Config
+  copy: src=redis.conf dest=/etc/redis/
+  notify:
+  - restart redis

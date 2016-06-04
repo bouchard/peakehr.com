@@ -1,0 +1,22 @@
+---
+- name: Install UFW
+  apt: pkg=ufw state=present update_cache=yes cache_valid_time=3600
+  notify:
+    - restart ufw
+
+- name: Generate UFW rules
+  template: src={{ item }}.j2
+            dest=/lib/ufw/{{ item }}
+            owner=root
+            group=root
+            mode=640
+  with_items:
+    - user.rules
+    - user6.rules
+  notify: restart ufw
+
+- name: Enable UFW
+  lineinfile: dest=/etc/ufw/ufw.conf
+              regexp="^ENABLED"
+              line="ENABLED=yes"
+  notify: restart ufw

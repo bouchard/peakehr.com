@@ -1,0 +1,29 @@
+@import 'partials/mixins';
+
+body.patients.demographics {
+  #demographics {
+    margin-right: $sidebar-width;
+    padding: 20px;
+    h1 {
+      // font-size: 1.2em;
+      margin-bottom: 0;
+      &:first-of-type {
+        margin-top: 0;
+      }
+      // color: #f00;
+      a {
+        display: inline-block;
+        padding: 3px 10px;
+        line-height: 1em;
+        vertical-align: 2px;
+        font-size: 0.6em;
+        background: adjust-saturation(adjust-lightness($dark-color, 19%), $saturation-adjustment);
+        color: #fff;
+        @include regular-font;
+      }
+    }
+    h2 {
+      margin-top: 0;
+    }
+  }
+}

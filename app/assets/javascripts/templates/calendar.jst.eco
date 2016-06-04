@@ -1,0 +1,36 @@
+<!-- Sidebar Calendar -->
+<% numOfMonths = 3 %>
+<% selectedDate = moment(@date) %>
+<% startingDate = moment(@date).startOf('month') %>
+
+<table>
+<% for m in _.range(3) : %>
+  <% firstDayOfMonth = moment(startingDate).add('months', m) %>
+  <% lastDayOfMonth = moment(startingDate).add('months', m).endOf('month') %>
+  <% startOfFirstWeek = moment(firstDayOfMonth).startOf('week') %>
+  <% endOfLastWeek = moment(lastDayOfMonth).endOf('week') %>
+  <tr class="month">
+    <th colspan="7"><%= firstDayOfMonth.format('MMMM') %></th>
+  </tr>
+  <tr class="days-of-week">
+    <% for wday in ['S', 'M', 'Tu', 'W', 'Th', 'F', 'S'] : %>
+      <th><%= wday %></th>
+    <% end %>
+  </tr>
+  <% currentSunday = startOfFirstWeek %>
+  <% while currentSunday.isBefore(endOfLastWeek) : %>
+    <tr>
+    <% for wday in _.range(7) : %>
+      <% t = moment(currentSunday).add('days', wday) %>
+      <td rel="<%= t.format('YYYY-MM-DD') %>" class="<%= _.compact([ (if t.format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') then 'today' else ''), (if t.format('YYYY-MM-DD') == selectedDate.format('YYYY-MM-DD') then 'selected' else ''), (if t.format('MMMM') != firstDayOfMonth.format('MMMM') then 'invalid' else '') ]).join(' ') if t.format('MMMM') == firstDayOfMonth.format('MMMM') %>">
+        <% if t.format('MMMM') == firstDayOfMonth.format('MMMM') : %>
+          <a href="?s=<%= t.format('YYYY-MM-DD') %>"><%= _.parseInt(t.date()) %></a>
+        <% end %>
+      </td>
+    <% end %>
+    </tr>
+      <% currentSunday.add("days", 7) %>
+    <% end %>
+<% end %>
+</table>
+<!-- /Sidebar Calendar -->

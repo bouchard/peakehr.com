@@ -1,0 +1,5 @@
+This patient may be eligible to enroll in a research study you're participating in:
+<br>
+<strong><%= @study.name %></strong>
+<br>
+<a href="/patients/<%= window.clientSideState.patient_id %>/enrollments/new?study_id=<%= @study.id %>">Click here for more information</a>

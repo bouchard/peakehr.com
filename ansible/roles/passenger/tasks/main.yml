@@ -1,0 +1,63 @@
+---
+- name: Remove apache2
+  apt: name={{ item }} state=absent
+  with_items:
+    - apache2
+
+- name: Install Passenger (Rubygems)
+  gem: name=passenger state=latest user_install=no
+  sudo: true
+  register: passengerversion
+
+- name: Install other Rubygems (JSON, Bundler, Backup)
+  gem: name={{ item }} state=latest user_install=no
+  sudo: true
+  with_items:
+    - json
+    - bundler
+    - backup
+
+- name: Create Nginx build directory
+  command: mkdir -p /tmp/nginx-build
+
+- name: Download Nginx source
+  get_url: url=http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz dest=/tmp/nginx-build/nginx-{{ nginx_version }}.tar.gz
+
+- name: Untar Nginx source
+  command: creates=/tmp/nginx-build/nginx-{{ nginx_version }} tar -C /tmp/nginx-build -xzvf /tmp/nginx-build/nginx-{{ nginx_version }}.tar.gz
+
+- name: Build Passenger Nginx module
+  # build_passenger_module: VERSION={{ nginx_version }}
+  # shell: passenger-install-nginx-module --nginx-source-dir=/tmp/nginx-build/nginx-{{ nginx_version }} --extra-configure-flags="--with-http_gzip_static_module" --extra-configure-flags="--with-http_spdy_module" --prefix="/opt/nginx" --auto
+  # command: creates=/opt/nginx passenger-install-nginx-module --nginx-source-dir=/tmp/nginx-build/nginx-{{ nginx_version }} --extra-configure-flags="--with-http_gzip_static_module" --extra-configure-flags="--with-http_spdy_module" --prefix="/opt/nginx" --auto
+  # We need to rebuild each time as we can't tell if we have a new Passenger version.
+  command: passenger-install-nginx-module --nginx-source-dir=/tmp/nginx-build/nginx-{{ nginx_version }} --extra-configure-flags="--with-http_gzip_static_module" --extra-configure-flags="--with-http_spdy_module" --prefix="/opt/nginx" --auto
+
+- name: Copy over server certificates
+  copy: src=certs dest=/opt/nginx/conf
+
+- name: Copy over DH params
+  copy: src=dhparams.pem dest=/opt/nginx/conf/dhparams.pem
+
+- name: Copy over logrotate config for Nginx
+  copy: src=logrotate-nginx.conf dest=/etc/logrotate.d/nginx
+
+- name: Ensure the Nginx log directory exists
+  command: mkdir -p /opt/nginx/logs
+
+# - name: Set World-writable permissions on logs folder
+#   command: chmod 777 /opt/nginx/logs
+
+- name: Ensure the nginx configuration file is set
+  template: src=nginx.conf.j2 dest=/opt/nginx/conf/nginx.conf
+
+- name: Fix permissions for Nginx
+  command: chown -R www-data:www-data /opt/nginx
+  sudo: true
+
+- name: Set up the Upstart job for Nginx
+  copy: src=upstart-nginx.conf dest=/etc/init/nginx.conf
+  notify: restart nginx
+
+- name: Ensure Nginx is running
+  service: name=nginx state=restarted
